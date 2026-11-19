@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="id" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merlin the saving Wizard 🧙‍♂️✨ - Financial Planner</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Fredoka & Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- SheetJS for Excel / CSV -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- Chart.js for stats -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <!-- html2canvas for cute photocard exports -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- Canvas Confetti for Celebration -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        cute: ['"Fredoka"', 'cursive']
+                    },
+                    colors: {
+                        peach: {
+                            primary: '#FE9989',
+                            medium: '#F9C1BA',
+                            light: '#FFDAD3',
+                            soft: '#FDECE5',
+                            darkBg: '#121212',
+                            darkCard: '#1E1E1E'
+                        }
+                    },
+                    boxShadow: {
+                        'peach': '0 10px 25px -5px rgba(254, 153, 137, 0.25), 0 8px 10px -6px rgba(249, 193, 186, 0.2)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FDECE5;
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FE9989;
+            border-radius: 999px;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1.5px solid #FFDAD3;
+        }
+        .dark .glass-card {
+            background: rgba(28, 28, 30, 0.95);
+            border: 1.5px solid rgba(254, 153, 137, 0.25);
+        }
+        .cute-photocard {
+            background: linear-gradient(135deg, #FDECE5 0%, #FFDAD3 50%, #F9C1BA 100%);
+            border: 6px solid #ffffff;
+            box-shadow: 0 15px 35px rgba(254, 153, 137, 0.25);
+        }
+        /* Mobile Touch & Scroll Smooth Optimization */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-[#121212] text-slate-800 dark:text-slate-100 min-h-screen font-sans flex flex-col antialiased selection:bg-[#F9C1BA] selection:text-slate-900 transition-colors duration-300">
+
+    <!-- Header Navigation Wizard -->
+    <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#181818]/95 backdrop-blur-md border-b border-[#FFDAD3] dark:border-neutral-800 shadow-sm transition-colors">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                <!-- Logo & Brand Merlin -->
+                <div class="flex items-center space-x-2.5 sm:space-x-3">
+                    <div class="bg-[#FE9989] p-2 sm:p-2.5 rounded-2xl shadow-peach text-xl sm:text-2xl text-white">
+                        🧙‍♂️
+                    </div>
+                    <div>
+                        <h1 class="text-lg sm:text-2xl font-extrabold tracking-tight text-slate-800 dark:text-white font-cute flex items-center gap-1.5">
+                            Merlin <span class="hidden sm:inline text-[#FE9989]">the saving Wizard</span>
+                        </h1>
+                        <p class="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium hidden sm:block">Financial Planner & AI Wealth Assistant</p>
+                    </div>
+                </div>
+
+                <!-- Right Header Actions -->
+                <div class="flex items-center space-x-2 sm:space-x-3">
+                    <!-- Theme Toggle Button -->
+                    <button onclick="toggleTheme()" id="themeToggleBtn" title="Ganti Tema Terang / Gelap" class="p-2.5 rounded-xl bg-[#FDECE5] dark:bg-neutral-800 text-slate-700 dark:text-[#F9C1BA] border border-[#FFDAD3] dark:border-neutral-700 hover:bg-[#FFDAD3] transition flex items-center justify-center text-sm">
+                        <i id="themeIcon" class="fa-solid fa-moon"></i>
+                    </button>
+
+                    <!-- Master Unified Export Hamburger Button -->
+                    <button onclick="toggleExportMenuModal()" class="px-3.5 sm:px-4 py-2 sm:py-2.5 bg-[#FE9989] hover:bg-[#f78370] text-white font-bold rounded-xl sm:rounded-2xl shadow-sm transition flex items-center gap-1.5 sm:gap-2 text-xs font-cute active:scale-95">
+                        <i class="fa-solid fa-bars text-xs sm:text-sm"></i>
+                        <span>Menu</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs Bar -->
+        <div class="border-t border-[#FFDAD3] dark:border-neutral-800 bg-[#FDECE5]/60 dark:bg-[#1A1A1A]">
+            <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+                <nav class="flex space-x-1.5 sm:space-x-2 overflow-x-auto py-2 no-scrollbar scroll-smooth" id="tabNav">
+                    <button onclick="switchTab('comparisonTab')" id="btn-comparisonTab" class="tab-btn px-4 sm:px-5 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold font-cute whitespace-nowrap transition bg-[#FE9989] text-white shadow-sm">
+                        Rekap
+                    </button>
+                    <button onclick="switchTab('cashflowTab')" id="btn-cashflowTab" class="tab-btn px-4 sm:px-5 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold font-cute whitespace-nowrap transition text-slate-700 dark:text-slate-300 hover:bg-[#FFDAD3] dark:hover:bg-neutral-800">
+                        In &amp; Out
+                    </button>
+                    <button onclick="switchTab('investmentTab')" id="btn-investmentTab" class="tab-btn px-4 sm:px-5 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold font-cute whitespace-nowrap transition text-slate-700 dark:text-slate-300 hover:bg-[#FFDAD3] dark:hover:bg-neutral-800">
+                        Planning
+                    </button>
+                    <button onclick="switchTab('currencyTab')" id="btn-currencyTab" class="tab-btn px-4 sm:px-5 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold font-cute whitespace-nowrap transition text-slate-700 dark:text-slate-300 hover:bg-[#FFDAD3] dark:hover:bg-neutral-800">
+                        Convert
+                    </button>
+                    <button onclick="switchTab('reportTab')" id="btn-reportTab" class="tab-btn px-4 sm:px-5 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold font-cute whitespace-nowrap transition text-slate-700 dark:text-slate-300 hover:bg-[#FFDAD3] dark:hover:bg-neutral-800">
+                        Report
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-5 sm:py-6">
+
+        <!-- 0. TAB KOMPARASI SIDE-BY-SIDE (PEMASUKAN VS PENGELUARAN) -->
+        <section id="comparisonTab" class="tab-content space-y-6">
+
+            <!-- Ringkasan Statistik Cepat (Pengganti Banner Mantra) -->
+            <div class="glass-card rounded-3xl p-5 sm:p-6 shadow-sm">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#FFDAD3] dark:border-neutral-800 pb-3 mb-4">
+                    <div>
+                        <h2 class="text-base sm:text-lg font-bold text-slate-800 dark:text-white font-cute flex items-center gap-2">
+                            <span class="text-[#FE9989]">📊</span> Tabel Statistik & Ringkasan Harian
+                        </h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Ringkasan arus kas real-time berdasarkan catatan Anda</p>
+                    </div>
+                    <span id="liveDateDisplay" class="text-xs font-bold px-3 py-1.5 rounded-xl bg-[#FDECE5] dark:bg-neutral-800 text-slate-700 dark:text-[#F9C1BA] border border-[#FFDAD3] dark:border-neutral-700">
+                        📅 Memuat Tanggal...
+                    </span>
+                </div>
+
+                <!-- Tabel Statistik Ringkas -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-[#FDECE5] dark:bg-neutral-800 text-slate-700 dark:text-[#F9C1BA] font-bold uppercase">
+                            <tr>
+                                <th class="p-3 rounded-l-xl">Indikator Statistik</th>
+                                <th class="p-3">Periode Hari Ini</th>
+                                <th class="p-3">Periode Bulan Ini</th>
+                                <th class="p-3 rounded-r-xl text-right">Proyeksi Tahunan</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-[#FFDAD3] dark:divide-neutral-800 font-semibold text-slate-700 dark:text-slate-200">
+                            <tr>
+                                <td class="p-3 font-bold">Total Pemasukan</td>
+                                <td class="p-3 text-emerald-600 dark:text-emerald-400" id="statTblIncToday">Rp 0</td>
+                                <td class="p-3 text-emerald-600 dark:text-emerald-400" id="statTblIncMonth">Rp 0</td>
+                                <td class="p-3 text-right text-emerald-600 dark:text-emerald-400 font-bold" id="statTblIncYear">Rp 0</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-bold">Total Pengeluaran</td>
+                                <td class="p-3 text-rose-500 dark:text-rose-400" id="statTblOutToday">Rp 0</td>
+                                <td class="p-3 text-rose-500 dark:text-rose-400" id="statTblOutMonth">Rp 0</td>
+                                <td class="p-3 text-right text-rose-500 dark:text-rose-400 font-bold" id="statTblOutYear">Rp 0</td>
+                            </tr>
+                            <tr class="bg-[#FDECE5]/40 dark:bg-neutral-800/40">
+                                <td class="p-3 font-extrabold text-slate-900 dark:text-white">Selisih Bersih (Tabungan)</td>
+                                <td class="p-3 font-extrabold" id="statTblNetToday">Rp 0</td>
+                                <td class="p-3 font-extrabold" id="statTblNetMonth">Rp 0</td>
+                                <td class="p-3 text-right font-extrabold text-[#FE9989]" id="statTblNetYear">Rp 0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Summary Status Merlin Header Card -->
+            <div class="glass-card rounded-3xl p-5 sm:p-6 shadow-sm">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#FFDAD3] dark:border-neutral-800 pb-4">
+                    <div>
+                        <h2 class="text-lg sm:text-xl font-bold text-slate-800 dark:text-white font-cute flex items-center gap-2">
+                            <span class="text-[#FE9989]">⚖️</span> Komparasi Financial Health
+                        </h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Perbandingan Pemasukan vs Pengeluaran & Rasio Tabungan</p>
+                    </div>
+                    <div id="magicHealthBadge" class="px-4 py-2 rounded-2xl text-xs font-extrabold bg-[#FDECE5] dark:bg-neutral-800 text-slate-800 dark:text-[#F9C1BA] border border-[#F9C1BA] dark:border-neutral-700 flex items-center gap-2 font-cute">
+                        <span>Status:</span>
+                        <span id="magicHealthText">Stabil & Terkendali</span>
+                    </div>
+                </div>
+
+                <!-- Side-by-Side Key Metrics -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
+                    <div class="bg-[#FDECE5] dark:bg-neutral-800/90 border border-[#FFDAD3] dark:border-neutral-700 rounded-2xl p-4">
+                        <p class="text-[11px] text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider">Total Pemasukan</p>
+                        <p class="text-xl sm:text-2xl font-extrabold text-slate-800 dark:text-white font-cute mt-1" id="cmpTotalIncome">Rp 0</p>
+                        <span class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Akumulasi Pemasukan</span>
+                    </div>
+                    <div class="bg-[#FFDAD3] dark:bg-neutral-800/90 border border-[#F9C1BA] dark:border-neutral-700 rounded-2xl p-4">
+                        <p class="text-[11px] text-slate-700 dark:text-slate-400 font-bold uppercase tracking-wider">Total Pengeluaran</p>
+                        <p class="text-xl sm:text-2xl font-extrabold text-rose-600 dark:text-[#FE9989] font-cute mt-1" id="cmpTotalOutcome">Rp 0</p>
+                        <span class="text-[10px] text-slate-600 dark:text-slate-400 font-medium">Total Pengeluaran Tercatat</span>
+                    </div>
+                    <div class="bg-[#F9C1BA]/40 dark:bg-neutral-800/90 border border-[#F9C1BA] dark:border-neutral-700 rounded-2xl p-4">
+                        <p class="text-[11px] text-slate-700 dark:text-slate-400 font-bold uppercase tracking-wider">Net Savings / Sisa</p>
+                        <p class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white font-cute mt-1" id="cmpNetSavings">Rp 0</p>
+                        <span class="text-[10px] text-slate-600 dark:text-slate-400 font-medium">Dana Tersedia Ditabung</span>
+                    </div>
+                    <div class="bg-[#FE9989]/20 dark:bg-neutral-800/90 border border-[#FE9989] dark:border-neutral-700 rounded-2xl p-4">
+                        <p class="text-[11px] text-slate-800 dark:text-slate-400 font-bold uppercase tracking-wider">Savings Rate %</p>
+                        <p class="text-xl sm:text-2xl font-extrabold text-[#FE9989] font-cute mt-1" id="cmpSavingsRate">0%</p>
+                        <span class="text-[10px] text-slate-600 dark:text-slate-400 font-medium">Persentase Tabungan</span>
+                    </div>
+                </div>
+
+                <!-- Visual Ratio Progress Bar -->
+                <div class="mt-5 bg-[#FDECE5]/70 dark:bg-neutral-800/60 p-4 rounded-2xl border border-[#FFDAD3] dark:border-neutral-700">
+                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 text-xs font-bold text-slate-700 dark:text-slate-300 mb-2 font-cute">
+                        <span>Rasio Alokasi Pemasukan</span>
+                        <span id="cmpRatioText">Pengeluaran: 0% | Tersisa untuk Ditabung: 100%</span>
+                    </div>
+                    <div class="w-full bg-white dark:bg-neutral-900 rounded-full h-4 overflow-hidden flex p-0.5 border border-[#F9C1BA] dark:border-neutral-700">
+                        <div id="cmpExpenseBar" class="bg-[#FE9989] h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                        <div id="cmpSavingsBar" class="bg-emerald-400 h-full rounded-full transition-all duration-500" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Side-by-Side Detail Table Comparison -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Left: Summary Table Pemasukan -->
+                <div class="glass-card rounded-3xl p-5 sm:p-6 shadow-sm">
+                    <h3 class="text-md font-bold text-slate-800 dark:text-white font-cute mb-3 flex items-center justify-between">
+                        <span>📥 Rincian Pemasukan</span>
+                        <span class="text-xs bg-[#FDECE5] dark:bg-neutral-800 px-3 py-1 rounded-full text-slate-700 dark:text-[#F9C1BA] border border-[#FFDAD3] dark:border-neutral-700 font-bold" id="cmpIncCount">0 Item</span>
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-slate-700 dark:text-slate-300">
+                            <thead class="bg-[#FDECE5] dark:bg-neutral-800 text-slate-700 dark:text-[#F9C1BA] uppercase font-bold">
+                                <tr>
+                                    <th class="p-3 rounded-l-xl">Sumber</th>
+                                    <th class="p-3">Frekuensi</th>
+                                    <th class="p-3 text-right rounded-r-xl">Nominal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cmpIncBody" class="divide-y divide-[#FFDAD3] dark:divide-neutral-800 font-medium">
+                                <!-- Dynamic -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Right: Summary Table Pengeluaran -->
+                <div class="glass-card rounded-3xl p-5 sm:p-6 shadow-sm">
+                    <h3 class="text-md font-bold text-slate-800 dark:text-white font-cute mb-3 flex items-center justify-between">
+                        <span>📤 Rincian Pengeluaran</span>
+                        <span class="text-xs bg-[#FFDAD3] dark:bg-neutral-800 px-3 py-1 rounded-full text-slate-800 dark:text-[#FE9989] border border-[#F9C1BA] dark:border-neutral-700 font-bold" id="cmpOutCount">0 Item</span>
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-slate-700 dark:text-slate-300">
+                            <thead class="bg-[#FFDAD3] dark:bg-neutral-800 text-slate-800 dark:text-[#FE9989] uppercase font-bold">
+                                <tr>
+                                    <th class="p-3 rounded-l-xl">Nama Barang</th>
+                                    <th class="p-3">Urgensi</th>
+                                    <th class="p-3 text-right rounded-r-xl">Nominal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cmpOutBody" class="divide-y divide-[#FFDAD3] dark:divide-neutral-800 font-medium">
+                                <!-- Dynamic -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- 1. TAB GABUNGAN PEMASUKAN & PENGELUARAN (Responsive: Stack di Mobile, Side-by-Side di Desktop) -->
+        <section id="cashflowTab" class="tab-content space-y-6 hidden">
+            
+            <!-- Grid Utama: Side-by-Side di Desktop (lg:grid-cols-2) dan Scrollable ke bawah di Mobile (grid-cols-1) -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+
+                <!-- KOLOM KIRI: PEMASUKAN (INCOME) -->
+                <div class="space-y-6">
+                    <!-- Income Form Card -->
+                    <div class="glass-card rounded-3xl p-5 sm:p-6 shadow-sm space-y-4">
+                        <h2 class="text-lg font-bold text-slate-800 dark:text-white font-cute flex items-center gap-2">
+                            <span class="text-[#FE9989]">💰</span> Tambah Pemasukan
+                        </h2>
+                        <form id="incomeForm" onsubmit="handleAddIncome(event)" class="space-y-3.5 text-xs font-semibold">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Sumber Pemasukan</label>
+                                <input type="text" id="incSource" placeholder="Contoh: Gaji, Bonus, Hasil Jualan, Uang Saku" required class="w-full bg-[#FDECE5]/60 dark:bg-neutral-800 border border-[#FFDAD3] dark:border-neutral-700 rounded-2xl px-4 py-2.5 text-sm text-slate-800 dark:text-white focus:border-[#FE9989] focus:outline-none font-semibold">
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Nominal (Rp)</label>
+                                    <input type="number" id="incAmount" placeholder="0" required min="1" class="w-full bg-[#FDECE5]/60 dark:bg-neutral-800 border border-[#FFDAD3] dark:border-neutral-700 rounded-2xl px-4 py-2.5 text-sm text-slate-800 dark:text-white focus:border-[#FE9989] focus:outline-none font-bold">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Frekuensi</label>
+                                    <select id="incFrequency" class="w-full bg-[#FDECE5]/60 dark:bg-neutral-800 border border-[#FFDAD3] dark:border-neutral-700 rounded-2xl px-3 py-2.5 text-xs text-slate-800 dark:text-white font-bold focus:outline-none">
+                                        <option value="Bulanan" selected>📅 Bulanan</option>
+                                        <option value="Tahunan">🗓️ Tahunan</option>
+                                        <option value="Sekali">⚡ Sekali / Insidental</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Tanggal & Jam Input</label>
+                                <input type="datetime-local" id="incDatetime" class="w-full bg-[#FDECE5]/60 dark:bg-neutral-800 border border-[#FFDAD3] dark:border-neutral-700 rounded-2xl px-4 py-2.5 text-sm text-slate-800 dark:text-white font-bold focus:outline-none">
+                            </div>
+
+                            <button type="submit" class="w-full bg-[#FE9989] hover:bg-[#f78370] text-white font-cute font-bold py-3 rounded-2xl shadow-sm transition duration-200 text-sm">
+                                + Simpan Pemasukan
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Income Stat Summary -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="bg-[#FDECE5] dark:bg-neutral-800 border border-[#FFDAD3] dark:border-neutral-700 rounded-2xl p-4">
+                            <p class="text-[11px] text-slate-600 dark:text-slate-400 font-bold">Pemasukan Bulanan</p>
+                            <p class="text-base sm:text-lg font-extrabold text-slate-800 dark:text-white font-cute mt-1" id="totalMonthlyIncome">Rp 0</p>
+                        </div>
+                        <div class="bg-[#FFDAD3] dark:bg-neutral-800 border border-[#F9C1BA] dark:border-neutral-700 rounded-2xl p-4">
+                            <p class="text-[11px] text-slate-700 dark:text-slate-400 font-bold">Disetahunkan</p>
+                            <p class="text-base sm:text-lg font-extrabold text-slate-800 dark:text-white font-cute mt-1" id="totalAnnualIncome">Rp 0</p>
+                        </div>
+                        <div class="bg-[#F9C1BA]/50 dark:bg-neutral-800 border border-[#F9C1BA] dark:border-neutral-700 rounded-2xl p-4">
+                            <p class="text-[11px] text-slate-700 dark:text-slate-400 font-bold">Target Tabungan (30%)</p>
+                            <p class="text-base sm:text-lg font-extrabold text-[#FE9989] font-cute mt-1" id="targetSavingsSuggest">Rp 0</p>
+                        </div>
+                    </div>
+
+                    <!-- Income Table -->
+                    <div class="glass-card rounded-3xl p-5 sm:p-6 shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-md font-bold text-slate-800 dark:text-white font-cute flex items-center gap-2">
+                                <span>📜</span> Daftar Pemasukan
+                            </h3>
+                            <span class="text-xs bg-[#FDECE5] dark:bg-neutral-800 text-slate-700 dark:text-[#F9C1BA] font-bold px-3 py-1 rounded-full border border-[#FFDAD3] dark:border-neutral-700" id="incomeCount">0 Pemasukan</span>
+                        </div>
+                        <div class="overflow-x-auto max-h-80">
+                            <table class="w-full text-left text-xs text-slate-700 dark:text-slate-300">
+                                <thead class="bg-[#FDECE5] dark:bg-neutral-800 text-slate-700 dark:text-[#F9C1BA] uppercase font-bold sticky top-0">
+                                    <tr>
+                                        <th class="p-3 rounded-l-xl">Waktu</th>
+                                        <th class="p-3">Sumber</th>
+                                        <th class="p-3">Freq</th>
+                                        <th class="p-3">Nominal</th>
+                                        <th class="p-3 text-right rounded-r-xl">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="incomeTableBody" class="divide-y divide-[#FFDAD3] dark:divide-neutral-800 font-medium">
+                                    <!-- Dynamic -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KOLOM KANAN: PENGELUARAN (OUTCOME) -->
+                <div class="space-y-6">
+                    <!-- Outcome Form Card -->
+                    <div class="glass-card rounded-3xl p-5 sm:p-6 shadow-sm space-y-4">
+                        <h2 class="text-lg font-bold text-slate-800 dark:text-white font-cute flex items-center gap-2">
+                            <span class="text-[#FE9989]">🛒</span> Input Pengeluaran
+                        </h2>
+                        <form id="outcomeForm" onsubmit="handleAddOutcome(event)" class="space-y-3 font-semibold text-xs">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Nama Barang / Jajanan</label>
+                                <input type="text" id="outItem" placeholder="Contoh: Kopi, Token Listrik, Makan Siang" required class="w-full bg-[#FDECE5]/60 dark:bg-neutral-800 border border-[#FFDAD3] dark:border-neutral-700 rounded-2xl px-4 py-2.5 text-sm text-slate-800 dark:text-white focus:border-[#FE9989] focus:outline-none font-semibold">
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Nominal (Rp)</label>
+                                    <input type="number" id="outAmount" placeholder="0" required min="1" class="w-full bg-[#FDECE5]/60 dark:bg-neutral-800 border border-[#FFDAD3] dark:border-neutral-700 rounded-2xl px-4 py-2.5 text-sm text-slate-800 dark:text-white focus:border-[#FE9989] focus:outline-none font-bold">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Kategori</label>
+                                    <select id="outCategory" class="w-full bg-[#FDECE5]/60 dark:bg-neutral-800 border border-[#FFDAD3] dark:border-neutral-700 rounded-2xl px-3 py-2.5 text-xs text-slate-800 dark:text-white font-bold focus:outline-none">
+                                        <option value="Makanan">🍱 Makanan & Minuman</option>
+                                        <option value="Transportasi">🛵 Transportasi</option>
+                                        <option value="Tagihan">⚡ Tagihan & Utility</option>
+                                        <option value="Belanja">🛍️ Belanja / Gaya Hidup</option>
+                                        <option value="Kesehatan">💊 Kesehatan</option>
+                                        <option value="Hiburan">🎮 Hiburan & Hobi</option>
+                                        <option value="Lainnya">✨ Lain-Lain</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Urgency Classification Level -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Tingkat Urgensi / Kepentingan</label>
+                                <select id="outUrgency" class="w-full bg-[#FDECE5]/60 dark:bg-neutral-800 border border-[#FFDAD3] dark:border-neutral-700 rounded-2xl px-4 py-2.5 text-xs text-slate-800 dark:text-white font-bold focus:outline-none" onchange="updateUrgencyPreview(this.value)">
+                                    <option value="Sangat Tidak Penting">🔴 Sangat Tidak Penting ("Jajanan Impulsif")</option>
+                                    <option value="Tidak Penting">🟧 Tidak Penting ("Bisa Ditunda")</option>
+                                    <option value="Masih Aman" selected>🟦 Masih Aman ("Kebutuhan Wajar")</option>
+                                    <option value="Sangat Penting">🟩 Sangat Penting ("Wajib Diisi")</option>
+                                    <option value="Urgent">🔥 Urgent ("Darurat")</option>
+                                </select>
+                            </div>
+
+                            <!-- Live Badge Preview -->
+                            <div id="urgencyBadgePreview" class="p-3 rounded-2xl border flex items-center justify-between bg-blue-50 border-blue-200 text-blue-700">
+                                <span class="text-xs font-bold">Klasifikasi Warna:</span>
+                                <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-blue-500 text-white">Masih Aman</span>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Tanggal & Jam</label>
+                                <input type="datetime-local" id="outDatetime" class="w-full bg-[#FDECE5]/60 dark:bg-neutral-800 border border-[#FFDAD3] dark:border-neutral-700 rounded-2xl px-4 py-2.5 text-sm text-slate-800 dark:text-white font-bold focus:outline-none">
+                            </div>
+
+                            <button type="submit" class="w-full bg-[#FE9989] hover:bg-[#f78370] text-white font-cute font-bold py-3 rounded-2xl shadow-sm transition duration-200 text-sm">
+                                + Simpan Pengeluaran
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Stat Summary Widgets -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="bg-[#FDECE5] dark:bg-neutral-800 border border-[#FFDAD3] dark:border-neutral-700 rounded-2xl p-4">
+                            <p class="text-[11px] text-slate-600 dark:text-slate-400 font-bold">Hari Ini</p>
+                            <p class="text-base sm:text-lg font-extrabold text-rose-600 dark:text-[#FE9989] font-cute mt-1" id="statTodayOutcome">Rp 0</p>
+                        </div>
+                        <div class="bg-[#FFDAD3] dark:bg-neutral-800 border border-[#F9C1BA] dark:border-neutral-700 rounded-2xl p-4">
+                            <p class="text-[11px] text-slate-700 dark:text-slate-400 font-bold">Bulan Ini</p>
+                            <p class="text-base sm:text-lg font-extrabold text-slate-800 dark:text-white font-cute mt-1" id="statMonthOutcome">Rp 0</p>
+                        </div>
+                        <div class="bg-[#F9C1BA]/50 dark:bg-neutral-800 border border-[#F9C1BA] dark:border-neutral-700 rounded-2xl p-4">
+                            <p class="text-[11px] text-slate-700 dark:text-slate-400 font-bold">Sisa Saldo Bebas</p>
+                            <p class="text-base sm:text-lg font-extrabold text-emerald-600 dark:text-emerald-400 font-cute mt-1" id="statRemainingCashflow">Rp 0</p>
+                        </div>
+                    </div>
+
+                    <!-- Statistics Charts -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="glass-card rounded-3xl p-4 shadow-sm">
+                            <h3 class="text-xs font-bold text-[#FE9989] uppercase tracking-wider mb-2 font-cute">Kategori Pengeluaran</h3>
+                            <div class="h-40 relative">
+                                <canvas id="chartCategory"></canvas>
+                            </div>
+                        </div>
+                        <div class="glass-card rounded-3xl p-4 shadow-sm">
+                            <h3 class="text-xs font-bold text-[#FE9989] uppercase tracking-wider mb-2 font-cute">Distribusi Urgensi</h3>
+                            <div class="h-40 relative">
+                                <canvas id="chartUrgency"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Outcomes List Table Header Actions -->
+                    <div class="glass-card rounded-3xl p-5 sm:p-6 shadow-sm">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                            <div>
+                                <h3 class="text-md font-bold text-slate-800 dark:text-white font-cute flex items-center gap-2">
+                                    <span>🕒</span> Riwayat Pengeluaran
+                                </h3>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-2">
+                                <select id="filterUrgency" onchange="renderOutcomes()" class="bg-[#FDECE5] dark:bg-neutral-800 border border-[#FFDAD3] dark:border-neutral-700 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 px-3 py-2 focus:outline-none">
+                                    <option value="ALL">Semua Urgensi</option>
+                                    <option value="Sangat Tidak Penting">🔴 Sangat Tidak Penting</option>
+                                    <option value="Tidak Penting">🟧 Tidak Penting</option>
+                                    <option value="Masih Aman">🟦 Masih Aman</option>
+                                    <option value="Sangat Penting">🟩 Sangat Penting</option>
+                                    <option value="Urgent">🔥 Urgent</option>
+                                </select>
+                                <button onclick="openCuteFrameModal()" class="bg-[#FE9989] hover:bg-[#f78370] text-white font-bold font-cute text-xs px-3.5 py-2 rounded-xl shadow-sm transition flex items-center gap-1.5">
+                                    📸 Photocard (PNG)
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Outcomes Table -->
+                        <div class="overflow-x-auto max-h-80">
+                            <table class="w-full text-left text-xs text-slate-700 dark:text-slate-300">
+                                <thead class="bg-[#FFDAD3] dark:bg-neutral-800 text-slate-800 dark:text-[#FE9989] uppercase font-bold sticky top-0">
+                                    <tr>
+                                        <th class="p-3 rounded-l-xl">Waktu</th>
+                                        <th class="p-3">Nama Barang</th>
+                                        <th class="p-3">Kategori</th>
+                                        <th class="p-3">Urgensi</th>
+                                        <th class="p-3">Nominal</th>
+                                        <th class="p-3 text-right rounded-r-xl">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="outcomeTableBody" class="divide-y divide-[#FFDAD3] dark:divide-neutral-800 font-medium">
+                                    <!-- Dynamic -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 3. TAB PLAN / GOAL INVESTASI -->
+        <section id="investmentTab" class="tab-content space-y-6 hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                <!-- Goal Calculator Form -->
+                <div class="lg:col-span-1 glass-card rounded-3xl p-6 shadow-sm space-y-4">
+                    <h2 class="text-lg font-bold text-slate-800 dark:text-white font-cute flex items-center gap-2">
+                        <span class="text-[#FE9989]">🎯</span> Target Goal & Compound Simulator
+                    </h2>
+                    <div class="space-y-4 text-xs">
+                        <div>
+                            <label class="block font-bold text-slate-600 dark:text-slate-300 mb-1">Modal Awal / Tabungan Saat Ini (Rp)</label>
+                            <input type="number" id="calcInitial" value="2000000" min="0" class="w-full bg-[#FDECE5]/60 dark:bg-neutral-800 border border-[#FFDAD3] dark:border-neutral-700 rounded-2xl px-4 py-2.5 text-sm font-bold text-slate-800 dark:text-white focus:outline-none" oninput="calculateInvestmentSim()">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-600 dark:text-slate-300 mb-1">Setoran Bulanan Konsisten (Rp)</label>
+                            <input type="number" id="calcMonthly" value="500000" min="0" class="w-full bg-[#FDECE5]/60 dark:bg-neutral-800 border border-[#FFDAD3] dark:border-neutral-700 rounded-2xl px-4 py-2.5 text-sm font-bold text-slate-800 dark:text-white focus:outline-none" oninput="calculateInvestmentSim()">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-600 dark:text-slate-300 mb-1">Ekspektasi Return Pertahun (%)</label>
+                            <input type="number" id="calcReturnRate" value="8" step="0.1" min="0" class="w-full bg-[#FDECE5]/60 dark:bg-neutral-800 border border-[#FFDAD3] dark:border-neutral-700 rounded-2xl px-4 py-2.5 text-sm font-bold text-slate-800 dark:text-white focus:outline-none" oninput="calculateInvestmentSim()">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-600 dark:text-slate-300 mb-1">Target Waktu (Tahun)</label>
+                            <input type="number" id="calcYears" value="3" min="1" max="50" class="w-full bg-[#FDECE5]/60 dark:bg-neutral-800 border border-[#FFDAD3] dark:border-neutral-700 rounded-2xl px-4 py-2.5 text-sm font-bold text-slate-800 dark:text-white focus:outline-none" oninput="calculateInvestmentSim()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulation Results -->
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="bg-[#FDECE5] dark:bg-neutral-800 border border-[#FFDAD3] dark:border-neutral-700 rounded-2xl p-5">
+                            <p class="text-xs text-slate-600 dark:text-slate-400 font-bold">Total Modal Disetor</p>
+                            <p class="text-xl font-extrabold text-slate-800 dark:text-white font-cute mt-1" id="simTotalPrincipal">Rp 0</p>
+                        </div>
+                        <div class="bg-[#FFDAD3] dark:bg-neutral-800 border border-[#F9C1BA] dark:border-neutral-700 rounded-2xl p-5">
+                            <p class="text-xs text-slate-700 dark:text-slate-400 font-bold">Estimasi Profit Bunga/Cuan</p>
+                            <p class="text-xl font-extrabold text-emerald-600 dark:text-emerald-400 font-cute mt-1" id="simTotalInterest">Rp 0</p>
+                        </div>
+                        <div class="bg-[#F9C1BA]/40 dark:bg-neutral-800 border border-[#FE9989] dark:border-neutral-700 rounded-2xl p-5">
+                            <p class="text-xs text-slate-800 dark:text-slate-400 font-bold">Estimasi Total Akhir</p>
+                            <p class="text-xl font-extrabold text-[#FE9989] font-cute mt-1" id="simFinalBalance">Rp 0</p>
+                        </div>
+                    </div>
+
+                    <!-- Year breakdown table -->
+                    <div class="glass-card rounded-3xl p-6 shadow-sm">
+                        <h3 class="text-md font-bold text-slate-800 dark:text-white font-cute mb-3 flex items-center gap-2">
+                            <span>🚀</span> Proyeksi Pertumbuhan Tahunan
+                        </h3>
+                        <div class="overflow-x-auto max-h-64">
+                            <table class="w-full text-left text-xs text-slate-700 dark:text-slate-300">
+                                <thead class="bg-[#FDECE5] dark:bg-neutral-800 text-slate-800 dark:text-[#F9C1BA] uppercase font-bold sticky top-0">
+                                    <tr>
+                                        <th class="p-3 rounded-l-xl">Tahun Ke</th>
+                                        <th class="p-3">Total Setoran</th>
+                                        <th class="p-3">Profit Bunga</th>
+                                        <th class="p-3 rounded-r-xl">Saldo Akhir</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="simTableBody" class="divide-y divide-[#FFDAD3] dark:divide-neutral-800 font-semibold">
+                                    <!-- Dynamic -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 4. TAB KONVERSI MATA UANG -->
+        <section id="currencyTab" class="tab-content space-y-6 hidden">
+            <div class="max-w-3xl mx-auto glass-card rounded-3xl p-6 sm:p-8 shadow-sm">
+                <div class="flex items-center justify-between border-b border-[#FFDAD3] dark:border-neutral-800 pb-4 mb-6">
+                    <div>
+                        <h2 class="text-lg sm:text-xl font-bold text-slate-800 dark:text-white font-cute flex items-center gap-2">
+                            <span class="text-[#FE9989]">💱</span> Konverter Mata Uang Realtime
+                        </h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Update otomatis kurs dunia langsung dari internet</p>
+                    </div>
+                    <button onclick="fetchExchangeRates()" class="px-3.5 py-2 bg-[#FDECE5] dark:bg-neutral-800 hover:bg-[#FFDAD3] text-slate-800 dark:text-[#F9C1BA] border border-[#FFDAD3] dark:border-neutral-700 rounded-xl text-xs font-bold font-cute transition flex items-center gap-1.5">
+                        🔄 Refresh
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Jumlah Nominal</label>
+                        <input type="number" id="currAmount" value="100" min="0" oninput="convertCurrency()" class="w-full bg-[#FDECE5]/60 dark:bg-neutral-800 border border-[#FFDAD3] dark:border-neutral-700 rounded-2xl px-4 py-3 text-lg font-bold text-slate-800 dark:text-white focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Dari</label>
+                        <select id="currFrom" onchange="convertCurrency()" class="w-full bg-[#FDECE5]/60 dark:bg-neutral-800 border border-[#FFDAD3] dark:border-neutral-700 rounded-2xl px-3 py-3 text-sm font-bold text-slate-800 dark:text-white focus:outline-none">
+                            <option value="USD" selected>USD ($)</option>
+                            <option value="IDR">IDR (Rp)</option>
+                            <option value="EUR">EUR (€)</option>
+                            <option value="JPY">JPY (¥)</option>
+                            <option value="SGD">SGD (S$)</option>
+                            <option value="MYR">MYR (RM)</option>
+                        </select>
+                    </div>
+
+                    <div class="flex justify-center md:pt-5">
+                        <button onclick="swapCurrencies()" class="p-3.5 bg-[#FE9989] hover:bg-[#f78370] text-white rounded-full transition shadow-sm">
+                            ⇄
+                        </button>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Ke</label>
+                        <select id="currTo" onchange="convertCurrency()" class="w-full bg-[#FDECE5]/60 dark:bg-neutral-800 border border-[#FFDAD3] dark:border-neutral-700 rounded-2xl px-3 py-3 text-sm font-bold text-slate-800 dark:text-white focus:outline-none">
+                            <option value="IDR" selected>IDR (Rp)</option>
+                            <option value="USD">USD ($)</option>
+                            <option value="EUR">EUR (€)</option>
+                            <option value="JPY">JPY (¥)</option>
+                            <option value="SGD">SGD (S$)</option>
+                            <option value="MYR">MYR (RM)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mt-8 p-6 bg-[#FDECE5] dark:bg-neutral-800 rounded-3xl border border-[#F9C1BA] dark:border-neutral-700 text-center">
+                    <p class="text-xs font-bold text-slate-600 dark:text-[#F9C1BA] uppercase tracking-wider mb-1">Hasil Konversi Kurs</p>
+                    <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-cute" id="currResult">100 USD = Rp 1.580.000</p>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 font-semibold mt-2" id="currUpdateInfo">Rate terkini diperbarui otomatis</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. TAB REPORT (GRAFIK LAPORAN TABUNGAN & ARUS KAS) -->
+        <section id="reportTab" class="tab-content space-y-6 hidden">
+            <div class="glass-card rounded-3xl p-5 sm:p-6 shadow-sm">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#FFDAD3] dark:border-neutral-800 pb-4 mb-6">
+                    <div>
+                        <h2 class="text-lg sm:text-xl font-bold text-slate-800 dark:text-white font-cute">
+                            Laporan Grafik Tabungan &amp; Arus Kas
+                        </h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Visualisasi pertumbuhan tabungan dan perbandingan pemasukan terhadap pengeluaran Anda</p>
+                    </div>
+                    <button onclick="openCuteFrameModal()" class="px-4 py-2 bg-[#FE9989] hover:bg-[#f78370] text-white font-bold font-cute text-xs rounded-xl shadow-sm transition self-start sm:self-center">
+                        Cetak Photocard PNG
+                    </button>
+                </div>
+
+                <!-- Summary Metrics -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-[#FDECE5] dark:bg-neutral-800 border border-[#FFDAD3] dark:border-neutral-700 rounded-2xl p-4">
+                        <p class="text-xs text-slate-600 dark:text-slate-400 font-bold">Total Pemasukan Tercatat</p>
+                        <p class="text-xl font-extrabold text-emerald-600 dark:text-emerald-400 font-cute mt-1" id="repTotalInc">Rp 0</p>
+                    </div>
+                    <div class="bg-[#FFDAD3] dark:bg-neutral-800 border border-[#F9C1BA] dark:border-neutral-700 rounded-2xl p-4">
+                        <p class="text-xs text-slate-700 dark:text-slate-400 font-bold">Total Pengeluaran Tercatat</p>
+                        <p class="text-xl font-extrabold text-rose-600 dark:text-[#FE9989] font-cute mt-1" id="repTotalOut">Rp 0</p>
+                    </div>
+                    <div class="bg-[#F9C1BA]/40 dark:bg-neutral-800 border border-[#FE9989] dark:border-neutral-700 rounded-2xl p-4">
+                        <p class="text-xs text-slate-800 dark:text-slate-400 font-bold">Akumulasi Tabungan Bersih</p>
+                        <p class="text-xl font-extrabold text-slate-900 dark:text-white font-cute mt-1" id="repNetSavings">Rp 0</p>
+                    </div>
+                </div>
+
+                <!-- Charts Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white/70 dark:bg-neutral-900/70 border border-[#FFDAD3] dark:border-neutral-800 rounded-2xl p-4 sm:p-5">
+                        <h3 class="text-sm font-bold text-slate-800 dark:text-white font-cute mb-1">Komparasi Pemasukan vs Pengeluaran</h3>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-4">Perbandingan total dana masuk, dana keluar, dan sisa tabungan</p>
+                        <div class="h-64 relative">
+                            <canvas id="chartCashflowBar"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/70 dark:bg-neutral-900/70 border border-[#FFDAD3] dark:border-neutral-800 rounded-2xl p-4 sm:p-5">
+                        <h3 class="text-sm font-bold text-slate-800 dark:text-white font-cute mb-1">Tren Saldo Tabungan</h3>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-4">Pergerakan kumulatif saldo tabungan berdasarkan urutan transaksi</p>
+                        <div class="h-64 relative">
+                            <canvas id="chartSavingsTrend"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal Photocard Lucu PNG Export -->
+    <div id="cuteFrameModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white dark:bg-[#1E1E1E] border-2 border-[#FFDAD3] dark:border-neutral-700 rounded-3xl max-w-md w-full p-6 shadow-2xl relative overflow-hidden">
+            <button onclick="closeCuteFrameModal()" class="absolute top-4 right-4 text-slate-400 hover:text-[#FE9989] text-xl font-bold">
+                ✕
+            </button>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white font-cute mb-1 flex items-center gap-2">
+                <span class="text-[#FE9989]">📸</span> Merlin Saving Photocard
+            </h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 font-medium mb-4">Simpan ringkasan keuangan harian Anda dalam bentuk kartu estetik!</p>
+
+            <div id="printableFrame" class="cute-photocard rounded-3xl p-6 text-slate-800 relative font-cute overflow-hidden my-2 border-4 border-white shadow-md">
+                <div class="text-center border-b-2 border-dashed border-[#FE9989] pb-3 mb-3">
+                    <h4 class="text-2xl font-bold text-slate-800 tracking-wide">Merlin Saving Card 🧙‍♂️</h4>
+                    <p class="text-[11px] text-slate-600 font-sans font-bold mt-0.5" id="cuteFrameDate">Tanggal: -</p>
+                </div>
+
+                <div class="space-y-2.5 text-xs font-sans font-bold">
+                    <div class="flex justify-between bg-white/90 p-2.5 rounded-2xl border border-[#F9C1BA]">
+                        <span class="text-slate-600">Total Income Bulan Ini:</span>
+                        <span class="text-emerald-600" id="cuteFrameIncome">Rp 0</span>
+                    </div>
+                    <div class="flex justify-between bg-white/90 p-2.5 rounded-2xl border border-[#F9C1BA]">
+                        <span class="text-slate-600">Pengeluaran Hari Ini:</span>
+                        <span class="text-rose-600" id="cuteFrameTodayOut">Rp 0</span>
+                    </div>
+                    <div class="flex justify-between bg-white/90 p-2.5 rounded-2xl border border-[#F9C1BA]">
+                        <span class="text-slate-600">Pengeluaran Bulan Ini:</span>
+                        <span class="text-slate-800" id="cuteFrameMonthOut">Rp 0</span>
+                    </div>
+                </div>
+
+                <div class="mt-4 text-center bg-white/80 p-3 rounded-2xl border border-[#FE9989]">
+                    <p class="text-xs font-bold text-slate-800 font-cute">"Langkah kecil menabung hari ini membangun masa depan yang tenang."</p>
+                </div>
+            </div>
+
+            <div class="mt-5 flex gap-3">
+                <button onclick="downloadCuteFrame('png')" class="flex-1 bg-[#FE9989] hover:bg-[#f78370] text-white font-cute font-bold py-3 rounded-2xl text-xs shadow-sm transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-download"></i> Unduh Gambar PNG
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Hamburger Export & Data Menu -->
+    <div id="exportMenuModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white dark:bg-[#1E1E1E] border-2 border-[#FFDAD3] dark:border-neutral-700 rounded-3xl max-w-sm w-full p-6 shadow-2xl relative overflow-hidden">
+            <button onclick="toggleExportMenuModal()" class="absolute top-4 right-4 text-slate-400 hover:text-[#FE9989] text-xl font-bold">
+                ✕
+            </button>
+
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white font-cute mb-1 flex items-center gap-2">
+                <i class="fa-solid fa-folder-open text-[#FE9989]"></i> Menu Export & Data
+            </h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 font-medium mb-5">Pilih format pengunduhan atau pengelolaan data Anda.</p>
+
+            <div class="space-y-3 font-sans">
+                <button onclick="exportUnifiedMasterCSV(); toggleExportMenuModal();" class="w-full text-left p-3.5 bg-[#FDECE5] dark:bg-neutral-800 hover:bg-[#FFDAD3] border border-[#FFDAD3] dark:border-neutral-700 rounded-2xl transition flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-[#FE9989] text-white flex items-center justify-center text-lg font-bold">
+                        <i class="fa-solid fa-file-csv"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-slate-800 dark:text-white">Export Master CSV (1 Sheet)</p>
+                        <p class="text-[10px] text-slate-500 dark:text-slate-400 font-semibold">Semua data dalam 1 file rapi</p>
+                    </div>
+                </button>
+
+                <button onclick="exportToExcel(); toggleExportMenuModal();" class="w-full text-left p-3.5 bg-[#FDECE5] dark:bg-neutral-800 hover:bg-[#FFDAD3] border border-[#FFDAD3] dark:border-neutral-700 rounded-2xl transition flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-lg font-bold">
+                        <i class="fa-solid fa-file-excel"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-slate-800 dark:text-white">Export Excel Workbook (.xlsx)</p>
+                        <p class="text-[10px] text-slate-500 dark:text-slate-400 font-semibold">Sheet Pemasukan & Pengeluaran</p>
+                    </div>
+                </button>
+
+                <label class="w-full text-left p-3.5 bg-[#FDECE5] dark:bg-neutral-800 hover:bg-[#FFDAD3] border border-[#FFDAD3] dark:border-neutral-700 rounded-2xl transition flex items-center gap-3 cursor-pointer">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center text-lg font-bold">
+                        <i class="fa-solid fa-file-import"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-slate-800 dark:text-white">Import Data Spreadsheet</p>
+                        <p class="text-[10px] text-slate-500 dark:text-slate-400 font-semibold">Unggah file .xlsx / .csv tersimpan</p>
+                    </div>
+                    <input type="file" id="importFile" accept=".xlsx, .xls, .csv" class="hidden" onchange="importData(event); toggleExportMenuModal();">
+                </label>
+
+                <div class="border-t border-[#FFDAD3] dark:border-neutral-700 my-2"></div>
+
+                <button onclick="clearAllData(); toggleExportMenuModal();" class="w-full text-left p-3 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 border border-rose-200 dark:border-rose-900 rounded-2xl transition flex items-center gap-3 text-rose-600 dark:text-rose-400 font-bold text-xs">
+                    <i class="fa-solid fa-trash-can text-sm ml-1"></i> Reset Seluruh Data Keuangan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Application Core -->
+    <script>
+        /* Global Data State */
+        let incomes = [];
+        let outcomes = [];
+        let exchangeRates = { IDR: 15800, EUR: 0.92, JPY: 154, SGD: 1.34, MYR: 4.45, USD: 1 };
+        let chartCatInstance = null;
+        let chartUrgInstance = null;
+        let chartCashflowBarInstance = null;
+        let chartSavingsTrendInstance = null;
+
+        /* Initialization */
+        window.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            loadLocalData();
+            setDefaultDateTime();
+            updateDateDisplay();
+
+            initCharts();
+            renderIncomes();
+            renderOutcomes();
+            calculateInvestmentSim();
+            fetchExchangeRates();
+            updateUrgencyPreview('Masih Aman');
+        });
+
+        /* Dark / Light Theme Toggle */
+        function initTheme() {
+            const savedTheme = localStorage.getItem('merlin_theme');
+            const htmlEl = document.documentElement;
+            const iconEl = document.getElementById('themeIcon');
+            if (savedTheme === 'dark') {
+                htmlEl.classList.add('dark');
+                if (iconEl) iconEl.className = 'fa-solid fa-sun text-amber-400';
+            } else {
+                htmlEl.classList.remove('dark');
+                if (iconEl) iconEl.className = 'fa-solid fa-moon';
+            }
+        }
+
+        function toggleTheme() {
+            const htmlEl = document.documentElement;
+            const iconEl = document.getElementById('themeIcon');
+            if (htmlEl.classList.contains('dark')) {
+                htmlEl.classList.remove('dark');
+                localStorage.setItem('merlin_theme', 'light');
+                if (iconEl) iconEl.className = 'fa-solid fa-moon';
+            } else {
+                htmlEl.classList.add('dark');
+                localStorage.setItem('merlin_theme', 'dark');
+                if (iconEl) iconEl.className = 'fa-solid fa-sun text-amber-400';
+            }
+        }
+
+        /* Date Display */
+        function updateDateDisplay() {
+            const now = new Date();
+            const str = now.toLocaleDateString('id-ID', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
+            const el = document.getElementById('liveDateDisplay');
+            if (el) el.innerText = `📅 ${str}`;
+        }
+
+        function setDefaultDateTime() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const iso = `${year}-${month}-${day}T${hours}:${minutes}`;
+
+            if(document.getElementById('incDatetime')) document.getElementById('incDatetime').value = iso;
+            if(document.getElementById('outDatetime')) document.getElementById('outDatetime').value = iso;
+        }
+
+        /* LocalStorage Persistence */
+        function saveLocalData() {
+            localStorage.setItem('savekami_incomes', JSON.stringify(incomes));
+            localStorage.setItem('savekami_outcomes', JSON.stringify(outcomes));
+        }
+
+        function loadLocalData() {
+            const inc = localStorage.getItem('savekami_incomes');
+            const out = localStorage.getItem('savekami_outcomes');
+
+            // Default array kosong agar pengguna mulai dari angka 0
+            if (inc) incomes = JSON.parse(inc);
+            else {
+                incomes = [];
+            }
+
+            if (out) outcomes = JSON.parse(out);
+            else {
+                outcomes = [];
+            }
+        }
+
+        /* Tab Switcher */
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            const targetTab = document.getElementById(tabId);
+            if (targetTab) targetTab.classList.remove('hidden');
+
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn px-4 sm:px-5 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold font-cute whitespace-nowrap transition text-slate-700 dark:text-slate-300 hover:bg-[#FFDAD3] dark:hover:bg-neutral-800";
+            });
+
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            if (activeBtn) {
+                activeBtn.className = "tab-btn px-4 sm:px-5 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold font-cute whitespace-nowrap transition bg-[#FE9989] text-white shadow-sm";
+            }
+
+            if (tabId === 'reportTab') {
+                updateReportCharts();
+            }
+        }
+
+        /* Currency Formatter */
+        function formatRupiah(num) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(num);
+        }
+
+        /* ---------------- INCOME LOGIC ---------------- */
+        function handleAddIncome(e) {
+            e.preventDefault();
+            const source = document.getElementById('incSource').value;
+            const amount = parseFloat(document.getElementById('incAmount').value);
+            const frequency = document.getElementById('incFrequency').value;
+            const datetime = document.getElementById('incDatetime').value;
+
+            incomes.push({ id: Date.now(), source, amount, frequency, datetime });
+            saveLocalData();
+            renderIncomes();
+            document.getElementById('incomeForm').reset();
+            setDefaultDateTime();
+        }
+
+        function deleteIncome(id) {
+            incomes = incomes.filter(i => i.id !== id);
+            saveLocalData();
+            renderIncomes();
+        }
+
+        function renderIncomes() {
+            const tbody = document.getElementById('incomeTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            let totalMonthly = 0, totalAnnual = 0;
+
+            incomes.forEach(inc => {
+                let monthlyVal = (inc.frequency === 'Tahunan') ? inc.amount / 12 : inc.amount;
+                totalMonthly += monthlyVal;
+                totalAnnual += (inc.frequency === 'Tahunan') ? inc.amount : inc.amount * 12;
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-emerald-50/50 transition";
+                tr.innerHTML = `
+                    <td class="p-3">${inc.datetime.replace('T', ' ')}</td>
+                    <td class="p-3 font-bold text-slate-800">${inc.source}</td>
+                    <td class="p-3"><span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold">${inc.frequency}</span></td>
+                    <td class="p-3 font-extrabold text-emerald-600 font-cute text-sm">${formatRupiah(inc.amount)}</td>
+                    <td class="p-3 text-right">
+                        <button onclick="deleteIncome(${inc.id})" class="text-rose-400 hover:text-rose-600 p-1"><i class="fa-solid fa-trash-can"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            if (document.getElementById('totalMonthlyIncome')) document.getElementById('totalMonthlyIncome').innerText = formatRupiah(totalMonthly);
+            if (document.getElementById('totalAnnualIncome')) document.getElementById('totalAnnualIncome').innerText = formatRupiah(totalAnnual);
+            if (document.getElementById('targetSavingsSuggest')) document.getElementById('targetSavingsSuggest').innerText = formatRupiah(totalMonthly * 0.3);
+            if (document.getElementById('incomeCount')) document.getElementById('incomeCount').innerText = `${incomes.length} Pemasukan`;
+
+            updateOverallStats();
+        }
+
+        /* ---------------- OUTCOME & URGENCY BADGES ---------------- */
+        function getUrgencyBadgeStyle(urgency) {
+            switch(urgency) {
+                case 'Sangat Tidak Penting':
+                    return 'bg-rose-100 text-rose-700 border-rose-300';
+                case 'Tidak Penting':
+                    return 'bg-orange-100 text-orange-700 border-orange-300';
+                case 'Masih Aman':
+                    return 'bg-blue-100 text-blue-700 border-blue-300';
+                case 'Sangat Penting':
+                    return 'bg-emerald-100 text-emerald-700 border-emerald-300';
+                case 'Urgent':
+                    return 'bg-purple-100 text-purple-700 border-purple-300 font-extrabold';
+                default:
+                    return 'bg-slate-100 text-slate-700 border-slate-300';
+            }
+        }
+
+        function updateUrgencyPreview(val) {
+            const preview = document.getElementById('urgencyBadgePreview');
+            const style = getUrgencyBadgeStyle(val);
+            preview.className = `p-3.5 rounded-2xl border-2 flex items-center justify-between ${style}`;
+            preview.innerHTML = `
+                <span class="text-xs font-bold">Klasifikasi Warna:</span>
+                <span class="px-3 py-1 rounded-full text-xs font-extrabold border ${style}">${val}</span>
+            `;
+        }
+
+        function handleAddOutcome(e) {
+            e.preventDefault();
+            const item = document.getElementById('outItem').value;
+            const amount = parseFloat(document.getElementById('outAmount').value);
+            const category = document.getElementById('outCategory').value;
+            const urgency = document.getElementById('outUrgency').value;
+            const datetime = document.getElementById('outDatetime').value;
+
+            outcomes.push({ id: Date.now(), item, amount, category, urgency, datetime });
+            saveLocalData();
+            renderOutcomes();
+            document.getElementById('outcomeForm').reset();
+            setDefaultDateTime();
+            updateUrgencyPreview('Masih Aman');
+        }
+
+        function deleteOutcome(id) {
+            outcomes = outcomes.filter(o => o.id !== id);
+            saveLocalData();
+            renderOutcomes();
+        }
+
+        function renderOutcomes() {
+            const tbody = document.getElementById('outcomeTableBody');
+            const filterVal = document.getElementById('filterUrgency').value;
+            tbody.innerHTML = '';
+
+            let filtered = (filterVal !== 'ALL') ? outcomes.filter(o => o.urgency === filterVal) : outcomes;
+            filtered.sort((a,b) => new Date(b.datetime) - new Date(a.datetime));
+
+            filtered.forEach(out => {
+                const badgeStyle = getUrgencyBadgeStyle(out.urgency);
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-pink-50/50 transition";
+                tr.innerHTML = `
+                    <td class="p-3">${out.datetime.replace('T', ' ')}</td>
+                    <td class="p-3 font-bold text-slate-800">${out.item}</td>
+                    <td class="p-3"><span class="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[10px] font-bold border border-slate-200">${out.category}</span></td>
+                    <td class="p-3"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${badgeStyle}">${out.urgency}</span></td>
+                    <td class="p-3 font-extrabold text-rose-500 font-cute text-sm">${formatRupiah(out.amount)}</td>
+                    <td class="p-3 text-right">
+                        <button onclick="deleteOutcome(${out.id})" class="text-rose-400 hover:text-rose-600 p-1"><i class="fa-solid fa-trash-can"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            updateOverallStats();
+            updateCharts();
+        }
+
+        function updateOverallStats() {
+            const todayStr = new Date().toISOString().slice(0,10);
+            const monthStr = new Date().toISOString().slice(0,7);
+
+            let todayOut = 0, monthOut = 0, totalOut = 0;
+            outcomes.forEach(o => {
+                totalOut += o.amount;
+                if(o.datetime.startsWith(todayStr)) todayOut += o.amount;
+                if(o.datetime.startsWith(monthStr)) monthOut += o.amount;
+            });
+
+            let todayInc = 0, monthlyIncome = 0, annualIncome = 0;
+            incomes.forEach(i => {
+                if(i.datetime.startsWith(todayStr)) todayInc += i.amount;
+                monthlyIncome += (i.frequency === 'Tahunan') ? i.amount / 12 : i.amount;
+                annualIncome += (i.frequency === 'Tahunan') ? i.amount : i.amount * 12;
+            });
+
+            const remaining = monthlyIncome - monthOut;
+
+            if (document.getElementById('statTodayOutcome')) document.getElementById('statTodayOutcome').innerText = formatRupiah(todayOut);
+            if (document.getElementById('statMonthOutcome')) document.getElementById('statMonthOutcome').innerText = formatRupiah(monthOut);
+            if (document.getElementById('statRemainingCashflow')) {
+                const el = document.getElementById('statRemainingCashflow');
+                el.innerText = formatRupiah(remaining);
+                el.className = (remaining < 0) ? "text-base sm:text-lg font-extrabold text-rose-600 font-cute mt-1" : "text-base sm:text-lg font-extrabold text-emerald-600 dark:text-emerald-400 font-cute mt-1";
+            }
+
+            // Update Tabel Statistik Ringkas di Tab Komparasi
+            if (document.getElementById('statTblIncToday')) document.getElementById('statTblIncToday').innerText = formatRupiah(todayInc);
+            if (document.getElementById('statTblIncMonth')) document.getElementById('statTblIncMonth').innerText = formatRupiah(monthlyIncome);
+            if (document.getElementById('statTblIncYear')) document.getElementById('statTblIncYear').innerText = formatRupiah(annualIncome);
+
+            if (document.getElementById('statTblOutToday')) document.getElementById('statTblOutToday').innerText = formatRupiah(todayOut);
+            if (document.getElementById('statTblOutMonth')) document.getElementById('statTblOutMonth').innerText = formatRupiah(monthOut);
+            if (document.getElementById('statTblOutYear')) document.getElementById('statTblOutYear').innerText = formatRupiah(monthOut * 12);
+
+            if (document.getElementById('statTblNetToday')) document.getElementById('statTblNetToday').innerText = formatRupiah(todayInc - todayOut);
+            if (document.getElementById('statTblNetMonth')) document.getElementById('statTblNetMonth').innerText = formatRupiah(monthlyIncome - monthOut);
+            if (document.getElementById('statTblNetYear')) document.getElementById('statTblNetYear').innerText = formatRupiah(annualIncome - (monthOut * 12));
+
+            updateReportCharts();
+        }
+
+        /* ---------------- CHARTS ---------------- */
+        function initCharts() {
+            const ctxCatEl = document.getElementById('chartCategory');
+            if (ctxCatEl) {
+                chartCatInstance = new Chart(ctxCatEl.getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            data: [],
+                            backgroundColor: ['#FE9989', '#339af0', '#fcc419', '#51cf66', '#cc5de8', '#ff922b', '#868e96']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: true, position: 'right', labels: { font: { family: 'Fredoka', size: 10 } } } }
+                    }
+                });
+            }
+
+            const ctxUrgEl = document.getElementById('chartUrgency');
+            if (ctxUrgEl) {
+                chartUrgInstance = new Chart(ctxUrgEl.getContext('2d'), {
+                    type: 'pie',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            data: [],
+                            backgroundColor: ['#ff6b6b', '#ff922b', '#339af0', '#51cf66', '#cc5de8']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: true, position: 'right', labels: { font: { family: 'Fredoka', size: 10 } } } }
+                    }
+                });
+            }
+
+            const ctxBarEl = document.getElementById('chartCashflowBar');
+            if (ctxBarEl) {
+                chartCashflowBarInstance = new Chart(ctxBarEl.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Total Pemasukan', 'Total Pengeluaran', 'Sisa Tabungan'],
+                        datasets: [{
+                            label: 'Nominal (Rp)',
+                            data: [0, 0, 0],
+                            backgroundColor: ['#10b981', '#FE9989', '#6366f1'],
+                            borderRadius: 10
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+            }
+
+            const ctxTrendEl = document.getElementById('chartSavingsTrend');
+            if (ctxTrendEl) {
+                chartSavingsTrendInstance = new Chart(ctxTrendEl.getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: ['Awal'],
+                        datasets: [{
+                            label: 'Saldo Tabungan Kumulatif (Rp)',
+                            data: [0],
+                            borderColor: '#FE9989',
+                            backgroundColor: 'rgba(254, 153, 137, 0.2)',
+                            fill: true,
+                            tension: 0.35,
+                            pointRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: true } },
+                        scales: {
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+            }
+
+            updateCharts();
+            updateReportCharts();
+        }
+
+        function updateCharts() {
+            if (!chartCatInstance || !chartUrgInstance) return;
+
+            const catMap = {};
+            const urgMap = { 'Sangat Tidak Penting': 0, 'Tidak Penting': 0, 'Masih Aman': 0, 'Sangat Penting': 0, 'Urgent': 0 };
+
+            outcomes.forEach(o => {
+                catMap[o.category] = (catMap[o.category] || 0) + o.amount;
+                if (urgMap[o.urgency] !== undefined) urgMap[o.urgency] += o.amount;
+            });
+
+            chartCatInstance.data.labels = Object.keys(catMap);
+            chartCatInstance.data.datasets[0].data = Object.values(catMap);
+            chartCatInstance.update();
+
+            chartUrgInstance.data.labels = Object.keys(urgMap);
+            chartUrgInstance.data.datasets[0].data = Object.values(urgMap);
+            chartUrgInstance.update();
+        }
+
+        function updateReportCharts() {
+            let totalInc = incomes.reduce((acc, i) => acc + i.amount, 0);
+            let totalOut = outcomes.reduce((acc, o) => acc + o.amount, 0);
+            let netSavings = totalInc - totalOut;
+
+            if (document.getElementById('repTotalInc')) document.getElementById('repTotalInc').innerText = formatRupiah(totalInc);
+            if (document.getElementById('repTotalOut')) document.getElementById('repTotalOut').innerText = formatRupiah(totalOut);
+            if (document.getElementById('repNetSavings')) {
+                const el = document.getElementById('repNetSavings');
+                el.innerText = formatRupiah(netSavings);
+                el.className = netSavings < 0
+                    ? "text-xl font-extrabold text-rose-600 font-cute mt-1"
+                    : "text-xl font-extrabold text-slate-900 dark:text-white font-cute mt-1";
+            }
+
+            if (chartCashflowBarInstance) {
+                chartCashflowBarInstance.data.datasets[0].data = [totalInc, totalOut, Math.max(0, netSavings)];
+                chartCashflowBarInstance.update();
+            }
+
+            if (chartSavingsTrendInstance) {
+                const events = [];
+                incomes.forEach(i => events.push({ dt: i.datetime || '', delta: i.amount, label: `+${i.source}` }));
+                outcomes.forEach(o => events.push({ dt: o.datetime || '', delta: -o.amount, label: `-${o.item}` }));
+                events.sort((a, b) => new Date(a.dt) - new Date(b.dt));
+
+                let labels = ['Mulai'];
+                let balances = [0];
+                let running = 0;
+
+                events.forEach(ev => {
+                    running += ev.delta;
+                    const shortDate = ev.dt ? ev.dt.slice(5, 10) : '';
+                    labels.push(`${shortDate} (${ev.label.slice(0, 12)})`);
+                    balances.push(running);
+                });
+
+                chartSavingsTrendInstance.data.labels = labels;
+                chartSavingsTrendInstance.data.datasets[0].data = balances;
+                chartSavingsTrendInstance.update();
+            }
+        }
+
+        /* ---------------- EXCEL / CSV EXPORT & IMPORT (FIXED) ---------------- */
+        function exportToExcel() {
+            try {
+                if (typeof XLSX === 'undefined') {
+                    alert('Library Excel belum siap. Silakan periksa koneksi internet Anda.');
+                    return;
+                }
+
+                const wb = XLSX.utils.book_new();
+
+                // Format data pemasukan yang bersih
+                const incClean = incomes.map(i => ({
+                    'Tanggal/Waktu': i.datetime ? i.datetime.replace('T', ' ') : '',
+                    'Sumber Pemasukan': i.source || '',
+                    'Frekuensi': i.frequency || '',
+                    'Nominal (Rp)': Number(i.amount) || 0
+                }));
+
+                // Format data pengeluaran yang bersih
+                const outClean = outcomes.map(o => ({
+                    'Tanggal/Waktu': o.datetime ? o.datetime.replace('T', ' ') : '',
+                    'Nama Barang': o.item || '',
+                    'Kategori': o.category || '',
+                    'Tingkat Urgensi': o.urgency || '',
+                    'Nominal (Rp)': Number(o.amount) || 0
+                }));
+
+                const wsInc = XLSX.utils.json_to_sheet(incClean.length > 0 ? incClean : [{'Informasi': 'Tidak ada data pemasukan'}]);
+                const wsOut = XLSX.utils.json_to_sheet(outClean.length > 0 ? outClean : [{'Informasi': 'Tidak ada data pengeluaran'}]);
+
+                XLSX.utils.book_append_sheet(wb, wsInc, "Pemasukan");
+                XLSX.utils.book_append_sheet(wb, wsOut, "Pengeluaran");
+
+                // Generate file binary buffer yang valid
+                const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+                const blob = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.setAttribute("download", `Merlin_Financial_Report_${new Date().toISOString().slice(0,10)}.xlsx`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } catch (err) {
+                console.error("Gagal export Excel:", err);
+                alert("Terjadi kesalahan saat memproses file Excel: " + err.message);
+            }
+        }
+
+        function exportUnifiedMasterCSV() {
+            try {
+                let csvRows = [];
+
+                // Header & Ringkasan Eksekutif
+                csvRows.push("=== MERLIN THE SAVING WIZARD - MASTER FINANCIAL REPORT ===");
+                csvRows.push(`Tanggal Export:,${new Date().toLocaleString()}`);
+                csvRows.push("");
+
+                // Tabel Pemasukan
+                csvRows.push("--- RINCIAN PEMASUKAN (INCOME) ---");
+                csvRows.push("Tanggal/Waktu,Sumber Pemasukan,Frekuensi,Nominal (IDR)");
+                if (incomes.length === 0) {
+                    csvRows.push("-,Belum ada data pemasukan,-,0");
+                } else {
+                    incomes.forEach(i => {
+                        const dt = `"${(i.datetime || '').replace('T', ' ')}"`;
+                        const src = `"${(i.source || '').replace(/"/g, '""')}"`;
+                        const freq = `"${i.frequency || ''}"`;
+                        csvRows.push(`${dt},${src},${freq},${i.amount || 0}`);
+                    });
+                }
+                csvRows.push("");
+
+                // Tabel Pengeluaran
+                csvRows.push("--- RINCIAN PENGELUARAN (OUTCOME) ---");
+                csvRows.push("Tanggal/Waktu,Nama Barang,Kategori,Tingkat Urgensi,Nominal (IDR)");
+                if (outcomes.length === 0) {
+                    csvRows.push("-","Belum ada data pengeluaran","-","-",0);
+                } else {
+                    outcomes.forEach(o => {
+                        const dt = `"${(o.datetime || '').replace('T', ' ')}"`;
+                        const item = `"${(o.item || '').replace(/"/g, '""')}"`;
+                        const cat = `"${o.category || ''}"`;
+                        const urg = `"${o.urgency || ''}"`;
+                        csvRows.push(`${dt},${item},${cat},${urg},${o.amount || 0}`);
+                    });
+                }
+                csvRows.push("");
+
+                // Kurs Mata Uang
+                csvRows.push("--- KURS MATA UANG REALTIME (VS USD) ---");
+                csvRows.push("Mata Uang,Kurs");
+                for (let [curr, rate] of Object.entries(exchangeRates)) {
+                    csvRows.push(`${curr},${rate}`);
+                }
+
+                const csvString = "\ufeff" + csvRows.join("\n");
+                const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.setAttribute("download", `Merlin_Master_Financial_Report_${new Date().toISOString().slice(0,10)}.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } catch (err) {
+                console.error("Gagal export CSV:", err);
+                alert("Terjadi kesalahan saat mendownload file CSV: " + err.message);
+            }
+        }
+
+        function importData(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const data = new Uint8Array(evt.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+
+                if (workbook.SheetNames.length > 0) {
+                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const json = XLSX.utils.sheet_to_json(sheet);
+                    if (json.length > 0) {
+                        outcomes = json.map((row, idx) => ({
+                            id: Date.now() + idx,
+                            item: row.Barang || 'Imported Item',
+                            amount: parseFloat(row.Nominal) || 0,
+                            category: row.Kategori || 'Lainnya',
+                            urgency: row.Urgensi || 'Masih Aman',
+                            datetime: row.Tanggal || new Date().toISOString().slice(0,16)
+                        }));
+                    }
+                }
+                saveLocalData();
+                renderIncomes();
+                renderOutcomes();
+                alert('Data berhasil di-import dari file!');
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function clearAllData() {
+            if (confirm("Yakin mau reset semua data keuangan Merlin?")) {
+                incomes = [];
+                outcomes = [];
+                saveLocalData();
+                renderIncomes();
+                renderOutcomes();
+            }
+        }
+
+        /* ---------------- PHOTOCARD FRAME EXPORT ---------------- */
+        function openCuteFrameModal() {
+            document.getElementById('cuteFrameModal').classList.remove('hidden');
+            document.getElementById('cuteFrameDate').innerText = `Tanggal: ${new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
+
+            let monthlyIncome = 0;
+            incomes.forEach(i => monthlyIncome += (i.frequency === 'Tahunan') ? i.amount / 12 : i.amount);
+
+            const todayStr = new Date().toISOString().slice(0,10);
+            const monthStr = new Date().toISOString().slice(0,7);
+            let todayOut = 0, monthOut = 0;
+
+            outcomes.forEach(o => {
+                if(o.datetime.startsWith(todayStr)) todayOut += o.amount;
+                if(o.datetime.startsWith(monthStr)) monthOut += o.amount;
+            });
+
+            document.getElementById('cuteFrameIncome').innerText = formatRupiah(monthlyIncome);
+            document.getElementById('cuteFrameTodayOut').innerText = formatRupiah(todayOut);
+            document.getElementById('cuteFrameMonthOut').innerText = formatRupiah(monthOut);
+        }
+
+        function closeCuteFrameModal() {
+            document.getElementById('cuteFrameModal').classList.add('hidden');
+        }
+
+        function downloadCuteFrame(format) {
+            const frameEl = document.getElementById('printableFrame');
+            if (!frameEl) return;
+
+            // Pastikan modal terlihat penuh saat di-capture html2canvas agar tidak bernilai kosong/hidden
+            html2canvas(frameEl, { 
+                scale: 3, 
+                useCORS: true, 
+                allowTaint: true,
+                backgroundColor: null 
+            }).then(canvas => {
+                const imageURL = canvas.toDataURL(`image/png`);
+                const link = document.createElement('a');
+                link.download = `Merlin_Saving_Photocard_${new Date().toISOString().slice(0,10)}.png`;
+                link.href = imageURL;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }).catch(err => {
+                console.error("Gagal export gambar:", err);
+                alert("Maaf, terjadi kendala saat merender photocard. Silakan coba sekali lagi.");
+            });
+        }
+
+        /* Update Comparison Side-by-Side Dashboard */
+        function updateComparisonDashboard() {
+            let totalInc = 0;
+            incomes.forEach(i => totalInc += (i.frequency === 'Tahunan') ? i.amount / 12 : i.amount);
+
+            let totalOut = outcomes.reduce((acc, curr) => acc + curr.amount, 0);
+            let netSavings = totalInc - totalOut;
+            let expPercent = totalInc > 0 ? Math.min(100, Math.max(0, (totalOut / totalInc) * 100)) : (totalOut > 0 ? 100 : 0);
+            let savPercent = Math.max(0, 100 - expPercent);
+
+            if (document.getElementById('cmpTotalIncome')) document.getElementById('cmpTotalIncome').innerText = formatRupiah(totalInc);
+            if (document.getElementById('cmpTotalOutcome')) document.getElementById('cmpTotalOutcome').innerText = formatRupiah(totalOut);
+            if (document.getElementById('cmpNetSavings')) {
+                const el = document.getElementById('cmpNetSavings');
+                el.innerText = formatRupiah(netSavings);
+                el.className = netSavings >= 0 ? "text-2xl font-extrabold text-purple-700 font-cute mt-1.5" : "text-2xl font-extrabold text-rose-600 font-cute mt-1.5";
+            }
+            if (document.getElementById('cmpSavingsRate')) {
+                document.getElementById('cmpSavingsRate').innerText = totalInc > 0 ? `${((netSavings / totalInc) * 100).toFixed(1)}%` : '0%';
+            }
+
+            // Health status text
+            const healthBadge = document.getElementById('magicHealthBadge');
+            const healthText = document.getElementById('magicHealthText');
+            if (healthBadge && healthText) {
+                if (netSavings >= totalInc * 0.3 && totalInc > 0) {
+                    healthBadge.className = "px-4 py-2 rounded-2xl text-xs font-extrabold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800 flex items-center gap-2 font-cute";
+                    healthText.innerText = "Sangat Sehat (Target Tabungan Tercapai)";
+                } else if (netSavings >= 0) {
+                    healthBadge.className = "px-4 py-2 rounded-2xl text-xs font-extrabold bg-[#FDECE5] dark:bg-neutral-800 text-slate-800 dark:text-[#F9C1BA] border border-[#F9C1BA] dark:border-neutral-700 flex items-center gap-2 font-cute";
+                    healthText.innerText = "Aman & Terkendali";
+                } else {
+                    healthBadge.className = "px-4 py-2 rounded-2xl text-xs font-extrabold bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-400 border border-rose-300 dark:border-rose-800 flex items-center gap-2 font-cute";
+                    healthText.innerText = "Defisit (Pengeluaran Melebihi Pemasukan)";
+                }
+            }
+
+            // Bars
+            if (document.getElementById('cmpExpenseBar')) document.getElementById('cmpExpenseBar').style.width = `${expPercent}%`;
+            if (document.getElementById('cmpSavingsBar')) document.getElementById('cmpSavingsBar').style.width = `${savPercent}%`;
+            if (document.getElementById('cmpRatioText')) {
+                document.getElementById('cmpRatioText').innerText = `Pengeluaran: ${expPercent.toFixed(1)}% | Tersisa untuk Ditabung: ${savPercent.toFixed(1)}%`;
+            }
+
+            // Tables Side-by-Side
+            const incBody = document.getElementById('cmpIncBody');
+            if (incBody) {
+                incBody.innerHTML = '';
+                incomes.slice(0, 5).forEach(inc => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="p-2.5 font-bold text-slate-800">${inc.source}</td>
+                        <td class="p-2.5"><span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold">${inc.frequency}</span></td>
+                        <td class="p-2.5 text-right font-extrabold text-emerald-600 font-cute">${formatRupiah(inc.amount)}</td>
+                    `;
+                    incBody.appendChild(tr);
+                });
+                if (document.getElementById('cmpIncCount')) document.getElementById('cmpIncCount').innerText = `${incomes.length} Item`;
+            }
+
+            const outBody = document.getElementById('cmpOutBody');
+            if (outBody) {
+                outBody.innerHTML = '';
+                outcomes.slice(0, 5).forEach(out => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="p-2.5 font-bold text-slate-800 dark:text-slate-200">${out.item}</td>
+                        <td class="p-2.5"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${getUrgencyBadgeStyle(out.urgency)}">${out.urgency}</span></td>
+                        <td class="p-2.5 text-right font-extrabold text-rose-500 dark:text-[#FE9989] font-cute">${formatRupiah(out.amount)}</td>
+                    `;
+                    outBody.appendChild(tr);
+                });
+                if (document.getElementById('cmpOutCount')) document.getElementById('cmpOutCount').innerText = `${outcomes.length} Item`;
+            }
+        }
+
+        // Override existing updateOverallStats to also update side-by-side comparison
+        const originalUpdateOverallStats = updateOverallStats;
+        updateOverallStats = function() {
+            if (typeof originalUpdateOverallStats === 'function') originalUpdateOverallStats();
+            updateComparisonDashboard();
+        };
+
+        /* ---------------- EXPORT MENU MODAL ---------------- */
+        function toggleExportMenuModal() {
+            const modal = document.getElementById('exportMenuModal');
+            if (modal) {
+                modal.classList.toggle('hidden');
+            }
+        }
+
+        /* ---------------- INVESTMENT & COMPOUND SIMULATOR ---------------- */
+        function calculateInvestmentSim() {
+            const initialEl = document.getElementById('calcInitial');
+            const monthlyEl = document.getElementById('calcMonthly');
+            const rateEl = document.getElementById('calcReturnRate');
+            const yearsEl = document.getElementById('calcYears');
+
+            if (!initialEl || !monthlyEl || !rateEl || !yearsEl) return;
+
+            const initial = parseFloat(initialEl.value) || 0;
+            const monthly = parseFloat(monthlyEl.value) || 0;
+            const annualRate = (parseFloat(rateEl.value) || 0) / 100;
+            const years = Math.max(1, Math.min(50, parseInt(yearsEl.value) || 1));
+
+            const monthlyRate = annualRate / 12;
+            let currentBalance = initial;
+            let totalPrincipal = initial;
+
+            const tbody = document.getElementById('simTableBody');
+            if (tbody) tbody.innerHTML = '';
+
+            for (let y = 1; y <= years; y++) {
+                for (let m = 1; m <= 12; m++) {
+                    currentBalance = (currentBalance + monthly) * (1 + monthlyRate);
+                    totalPrincipal += monthly;
+                }
+                const totalInterest = currentBalance - totalPrincipal;
+
+                if (tbody) {
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-[#FDECE5]/50 dark:hover:bg-neutral-800/50 transition";
+                    tr.innerHTML = `
+                        <td class="p-3 font-bold text-slate-800 dark:text-slate-200">Tahun Ke-${y}</td>
+                        <td class="p-3">${formatRupiah(totalPrincipal)}</td>
+                        <td class="p-3 text-emerald-600 dark:text-emerald-400 font-bold">+${formatRupiah(totalInterest)}</td>
+                        <td class="p-3 font-extrabold text-[#FE9989] font-cute">${formatRupiah(currentBalance)}</td>
+                    `;
+                    tbody.appendChild(tr);
+                }
+            }
+
+            const finalInterest = currentBalance - totalPrincipal;
+            if (document.getElementById('simTotalPrincipal')) document.getElementById('simTotalPrincipal').innerText = formatRupiah(totalPrincipal);
+            if (document.getElementById('simTotalInterest')) document.getElementById('simTotalInterest').innerText = formatRupiah(finalInterest);
+            if (document.getElementById('simFinalBalance')) document.getElementById('simFinalBalance').innerText = formatRupiah(currentBalance);
+        }
+
+        /* ---------------- CURRENCY CONVERTER REALTIME ---------------- */
+        async function fetchExchangeRates() {
+            const infoEl = document.getElementById('currUpdateInfo');
+            if (infoEl) infoEl.innerText = "Sedang memuat kurs realtime...";
+            try {
+                const res = await fetch('https://open.er-api.com/v6/latest/USD');
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.rates) {
+                        exchangeRates = {
+                            USD: 1,
+                            IDR: data.rates.IDR || 15800,
+                            EUR: data.rates.EUR || 0.92,
+                            JPY: data.rates.JPY || 154,
+                            SGD: data.rates.SGD || 1.34,
+                            MYR: data.rates.MYR || 4.45
+                        };
+                        if (infoEl) infoEl.innerText = `Kurs diperbarui otomatis (${new Date().toLocaleTimeString('id-ID')})`;
+                    }
+                }
+            } catch (err) {
+                if (infoEl) infoEl.innerText = "Mode offline: Menggunakan estimasi kurs standar";
+            }
+            convertCurrency();
+        }
+
+        function convertCurrency() {
+            const amountEl = document.getElementById('currAmount');
+            const fromEl = document.getElementById('currFrom');
+            const toEl = document.getElementById('currTo');
+            const resultEl = document.getElementById('currResult');
+
+            if (!amountEl || !fromEl || !toEl || !resultEl) return;
+
+            const amount = parseFloat(amountEl.value) || 0;
+            const from = fromEl.value;
+            const to = toEl.value;
+
+            const rateFrom = exchangeRates[from] || 1;
+            const rateTo = exchangeRates[to] || 1;
+            const converted = (amount / rateFrom) * rateTo;
+
+            const formattedResult = new Intl.NumberFormat('id-ID', {
+                maximumFractionDigits: to === 'IDR' || to === 'JPY' ? 0 : 2
+            }).format(converted);
+
+            const formattedAmount = new Intl.NumberFormat('id-ID', {
+                maximumFractionDigits: 2
+            }).format(amount);
+
+            resultEl.innerText = `${formattedAmount} ${from} = ${formattedResult} ${to}`;
+        }
+
+        function swapCurrencies() {
+            const fromEl = document.getElementById('currFrom');
+            const toEl = document.getElementById('currTo');
+            if (!fromEl || !toEl) return;
+            const temp = fromEl.value;
+            fromEl.value = toEl.value;
+            toEl.value = temp;
+            convertCurrency();
+        }
+    </script>
+</body>
+</html>
